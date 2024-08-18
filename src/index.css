@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* background: linear-gradient(90deg,#141414,#2D2D2D); */
+  background-color: #141414;
+}
+
+@layer utilities {
+  @keyframes slide {
+
+    0%,
+    100% {
+      transform: translateX(0%);
+    }
+
+    33% {
+      transform: translateX(-100%);
+    }
+
+    66% {
+      transform: translateX(-200%);
+    }
+  }
+
+  .animate-slide {
+    animation: slide 9s infinite;
+  }
+}
