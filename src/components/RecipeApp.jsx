@@ -23,7 +23,7 @@ function RecipeApp({ dish, url }) {
 
     return (
         <>
-            <div className="flex flex-wrap justify-center align-top p-4 mt-20 bg-custom-black">
+            <div className="flex flex-wrap justify-center align-top p-4 ml-8 mt-20 bg-custom-black">
                 {recipes.map((recipe) => {
                     return (
                         <Cards
