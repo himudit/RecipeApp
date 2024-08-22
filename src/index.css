@@ -6,6 +6,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   /* background: linear-gradient(90deg,#141414,#2D2D2D); */
   background-color: #141414;
+  /* background-color: white; */
 }
 
 @layer utilities {

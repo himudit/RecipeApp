@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RecipeApp from './RecipeApp';
-import backgroundImage from '../assets/bell-peppers-1302126_1920.jpg';
-import ImageSlider from './ImageSlider';
+import CookingAnimation from './Preloader/Preloader';
 
 function ParentComponent() {
   const [dish, setDish] = useState('');
   const [submittedDish, setSubmittedDish] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e) => {
     setDish(e.target.value);
@@ -16,14 +16,19 @@ function ParentComponent() {
     setSubmittedDish(dish);
   };
 
+  useEffect(() => {
+    if (submittedDish) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+  }, [submittedDish]);
+
   const BASE_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 
   return (
     <>
-      <div>
-        {/* <ImageSlider/> */}
-      </div>
-
       <div
         className="flex flex-col justify-center items-center mt-4 md:mt-8 lg:mt-12 ml-12 md:ml-20 lg:ml-32  bg-no-repeat relative"
       >
@@ -41,12 +46,17 @@ function ParentComponent() {
           />
         </form>
         <div>
-          {/* Recipe app */}
-          {submittedDish && <RecipeApp dish={submittedDish.toLowerCase()} url={`${BASE_URL}${submittedDish.toLowerCase()}`} />}
+          {loading ? (
+            <CookingAnimation />
+          ) : (
+            submittedDish && (
+              <RecipeApp dish={submittedDish.toLowerCase()} url={`${BASE_URL}${submittedDish.toLowerCase()}`} />
+            )
+          )}
         </div>
-
       </div>
     </>
   );
 }
+
 export default ParentComponent;

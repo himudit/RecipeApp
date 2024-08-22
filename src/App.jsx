@@ -11,6 +11,7 @@ import Signup from './components/Signup';
 import Profile from './components/Profile.jsx'
 import RecipeAi from './components/RecipeAi.jsx'
 import Home from './components/Home.jsx'
+import CookingAnimation from "./components/Preloader/Preloader.jsx"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +25,7 @@ function App() {
         <Route path='search' element={<Search />} />
         <Route path='favourite' element={<Favourite />} />
         <Route path='recipeAI' element={<RecipeAi />} />
+        <Route path='preloader' element={<CookingAnimation />} />
       </Route>
     )
   );
