@@ -14,7 +14,6 @@ import Home from './components/Home.jsx'
 import CookingAnimation from "./components/Preloader/Preloader.jsx"
 
 function App() {
-  const [count, setCount] = useState(0)
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<Layout />}>
