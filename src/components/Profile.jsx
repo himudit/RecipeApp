@@ -23,30 +23,19 @@ function Profile() {
     setSelectedFile(e.target.files[0]);
   };
 
-
-  //   const handleAddFavourite = (e) => {
-  //     if (!userId) return;
-
-  //     setIsFavourite(!isFavourite);
-  //     e.preventDefault();
-  //     const documentData = {
-  //         user_id: userId, 
-  //         id: String(id),
-  //         name: String(name),
-  //         img_src: String(img_src)
-  //     };
-
-  //     const promise = databases.createDocument(conf.appwriteDatabaseId, conf.appwriteCollectionId, uuidv4(), documentData);
-
-  //     promise.then(
-  //         function (response) {
-  //             console.log(response);
-  //         },
-  //         function (error) {
-  //             console.log(error)
-  //         }
-  //     );
-  // };
+  // getting user details
+  const [userDetails, setuserDetails] = useState()
+  useEffect(() => {
+    const getData = account.get()
+    getData.then(
+      function (response) {
+        setuserDetails(response)
+      },
+      function (error) {
+        console.log(error);
+      }
+    )
+  }, [])
 
 
   const handleUpload = async () => {
@@ -75,34 +64,16 @@ function Profile() {
   useEffect(() => {
     const fetchProfilePictureUrl = async () => {
       try {
-        
+        if (!userDetails || !userDetails.$id) return;
+        // if (userDetails) {
+        const res = await databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteCollection3Id, [Query.equal('user_id', userDetails.$id)]);
+        setProfilePictureUrl(`${conf.appwriteUrl}/storage/buckets/${conf.appwriteBucketId}/files/${res.documents[0].image_id}/view?project=${conf.appwriteProjectId}&mode=admin`);
       } catch (error) {
-        if (error.code === 'DOCUMENT_NOT_FOUND') {
-          console.error('User profile document not found.');
-        } else if (error.code === 'FILE_NOT_FOUND') {
-          console.error('Profile picture file not found.');
-        } else {
-          console.error('Error fetching profile picture URL:', error);
-        }
-      }
-    };
-
-    fetchProfilePictureUrl();
-  }, []);
-
-  // getting user details
-  const [userDetails, setuserDetails] = useState()
-  useEffect(() => {
-    const getData = account.get()
-    getData.then(
-      function (response) {
-        setuserDetails(response)
-      },
-      function (error) {
         console.log(error);
       }
-    )
-  }, [])
+    };
+    fetchProfilePictureUrl();
+  }, [userDetails]);
 
   // handling logouts
   const handleLogout = async () => {
