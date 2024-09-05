@@ -1,11 +1,94 @@
 import React, { useState, useEffect } from 'react'
-import { databases, account } from '../appwrite/appwriteConfig';
+import { databases, account, storage } from '../appwrite/appwriteConfig';
 import { useNavigate, Link } from 'react-router-dom'
 import { Query } from 'appwrite';
 import conf from '../conf/conf';
+import { v4 as uuidv4 } from 'uuid';
+import images from '../assets/img1.jpg';
 
 function Profile() {
   const navigate = useNavigate()
+  const handleInputChange = (e) => {
+    setDish(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedDish(dish);
+  };
+  // avatar
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+
+  //   const handleAddFavourite = (e) => {
+  //     if (!userId) return;
+
+  //     setIsFavourite(!isFavourite);
+  //     e.preventDefault();
+  //     const documentData = {
+  //         user_id: userId, 
+  //         id: String(id),
+  //         name: String(name),
+  //         img_src: String(img_src)
+  //     };
+
+  //     const promise = databases.createDocument(conf.appwriteDatabaseId, conf.appwriteCollectionId, uuidv4(), documentData);
+
+  //     promise.then(
+  //         function (response) {
+  //             console.log(response);
+  //         },
+  //         function (error) {
+  //             console.log(error)
+  //         }
+  //     );
+  // };
+
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      try {
+        const fileId = uuidv4();
+        // Upload the file
+        await storage.createFile(conf.appwriteBucketId, fileId, selectedFile);
+        const documentData = {
+          user_id: String(userDetails.$id),
+          image_id: String(fileId),
+        };
+        const promise = databases.createDocument(conf.appwriteDatabaseId, conf.appwriteCollection3Id, uuidv4(), documentData);
+
+        // Get the file URL
+        const fileUrl = `${conf.appwriteUrl}/storage/buckets/${conf.appwriteBucketId}/files/${fileId}/view?project=${conf.appwriteProjectId}&mode=admin`;
+
+        console.log(fileUrl);
+        setProfilePictureUrl(fileUrl);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchProfilePictureUrl = async () => {
+      try {
+        
+      } catch (error) {
+        if (error.code === 'DOCUMENT_NOT_FOUND') {
+          console.error('User profile document not found.');
+        } else if (error.code === 'FILE_NOT_FOUND') {
+          console.error('Profile picture file not found.');
+        } else {
+          console.error('Error fetching profile picture URL:', error);
+        }
+      }
+    };
+
+    fetchProfilePictureUrl();
+  }, []);
 
   // getting user details
   const [userDetails, setuserDetails] = useState()
@@ -79,7 +162,8 @@ function Profile() {
     <>
       {userDetails ? (
         <>
-          <div className="min-h-min max-w-7xl mx-auto shadow-md flex justify-between text-right py-3 px-3 mt-2 rounded-md">
+          {/* max-w-xl */}
+          <div className="min-h-min w-[300px] mx-auto shadow-md flex justify-between text-right py-3 px-3 mt-2 rounded-md">
             <div>
               <p className="text-xl text-white">Hello {userDetails.name}</p>
             </div>
@@ -103,6 +187,27 @@ function Profile() {
           </Link>
         </p>
       )}
+
+      {/* Profile Picture */}
+      <div className="absolute top-1 right-4 md:top-3 md:right-6 lg:top-4 lg:right-8">
+        <img
+          src={profilePictureUrl || images} // Fallback to default image if profilePictureUrl is null
+          alt="Profile"
+          className="h-14 w-14 md:h-12 md:w-12 lg:h-14 lg:w-14 rounded-full cursor-pointer"
+        />
+        <input
+          type="file"
+          onChange={handleFileChange}
+          className="mt-2"
+        />
+        <button
+          onClick={handleUpload}
+          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Upload Profile Picture
+        </button>
+      </div>
+
 
       {/* slider */}
       <div className="flex flex-col items-center justify-center h-screen space-y-8">

@@ -51,41 +51,6 @@ function ParentComponent() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchProfilePictureUrl = async () => {
-  //     try {
-  //       // Get the document ID from user data (replace with your logic)
-  //       const documentId = user?.uid ?? ''; // Assuming you're using Firebase Authentication
-
-  //       if (documentId) {
-  //         // Fetch user profile from the database
-  //         const userProfile = await databases.getDocument(
-  //           conf.appwriteDatabaseId,
-  //           conf.appwriteCollectionId,
-  //           documentId
-  //         );
-
-  //         const fileId = userProfile.profilePictureFileId; // Replace with the actual field name
-
-  //         const url = `https://${conf.appwriteUrl}/v1/storage/buckets/${conf.appwriteBucketId}/files/${fileId}/view`;
-
-  //         setProfilePictureUrl(url);
-  //       } else {
-  //         console.error('Document ID not found.');
-  //       }
-  //     } catch (error) {
-  //       if (error.code === 'DOCUMENT_NOT_FOUND') {
-  //         console.error('User profile document not found.');
-  //       } else if (error.code === 'FILE_NOT_FOUND') {
-  //         console.error('Profile picture file not found.');
-  //       } else {
-  //         console.error('Error fetching profile picture URL:', error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchProfilePictureUrl();
-  // }, []);
 
   useEffect(() => {
     if (submittedDish) {
@@ -104,22 +69,22 @@ function ParentComponent() {
         {/* Profile Picture */}
         <div className="absolute top-1 right-4 md:top-3 md:right-6 lg:top-4 lg:right-8">
           <img
-            src={profilePictureUrl} // Fallback to default image if profilePictureUrl is null
+            src={profilePictureUrl || images} // Fallback to default image if profilePictureUrl is null
             alt="Profile"
             className="h-14 w-14 md:h-12 md:w-12 lg:h-14 lg:w-14 rounded-full cursor-pointer"
             onClick={handleProfileClick}
           />
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="mt-2"
-          />
-          <button
-            onClick={handleUpload}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Upload Profile Picture
-          </button>
+          {/* <input
+            // type="file"
+            // onChange={handleFileChange}
+            // className="mt-2"
+          // />
+          // <button
+          //   onClick={handleUpload}
+          //   className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+          // >
+          //   Upload Profile Picture
+          // </button> */}
         </div>
 
         {/* Background text */}
