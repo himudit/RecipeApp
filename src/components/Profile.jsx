@@ -133,18 +133,41 @@ function Profile() {
     <>
       {userDetails ? (
         <>
-          {/* max-w-xl */}
           <div className="min-h-min w-[300px] mx-auto shadow-md flex justify-between text-right py-3 px-3 mt-2 rounded-md">
-            <div>
-              <p className="text-xl text-white">Hello {userDetails.name}</p>
-            </div>
-            <div>
-              <button
-                className="bg-red-400 w-40 text-white p-1 rounded-md"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+            <div className='flex flex-col'>
+              <div>
+                {/* Profile Picture */}
+                <div className="absolute top-1 md:top-3 md:right-[10rem] lg:top-10 lg:right-[43rem]">
+                  <img
+                    src={profilePictureUrl || images}
+                    alt="Profile"
+                    style={{ height: '13rem', width: '12.5rem' }} // Adjust values as needed
+                    className="rounded-full cursor-pointer"
+                  />
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    className="mt-2"
+                  />
+                  <button
+                    onClick={handleUpload}
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                  >
+                    Upload Profile Picture
+                  </button>
+                </div>
+                <div>
+                  <p className="text-xl text-white">Hello {userDetails.name}</p>
+                </div>
+              </div>
+              <div>
+                <button
+                  className="bg-red-400 w-40 text-white p-1 rounded-md"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </>
@@ -159,29 +182,8 @@ function Profile() {
         </p>
       )}
 
-      {/* Profile Picture */}
-      <div className="absolute top-1 right-4 md:top-3 md:right-6 lg:top-4 lg:right-8">
-        <img
-          src={profilePictureUrl || images} // Fallback to default image if profilePictureUrl is null
-          alt="Profile"
-          className="h-14 w-14 md:h-12 md:w-12 lg:h-14 lg:w-14 rounded-full cursor-pointer"
-        />
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="mt-2"
-        />
-        <button
-          onClick={handleUpload}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Upload Profile Picture
-        </button>
-      </div>
-
-
       {/* slider */}
-      <div className="flex flex-col items-center justify-center h-screen space-y-8">
+      {/* <div className="flex flex-col items-center justify-center h-screen space-y-8">
         <div className="relative w-full max-w-2xl mx-auto h-96">
           {history.map((recipe, index) => (
             <div
@@ -190,27 +192,27 @@ function Profile() {
             >
               <img src={recipe.img_src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
             </div>
-          ))}
+          ))} */}
 
-          {/* Previous Button */}
-          <button
+      {/* Previous Button */}
+      {/* <button
             onClick={prevSlide}
             className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 focus:outline-none"
           >
             &#10094;
-          </button>
+          </button> */}
 
-          {/* Next Button */}
-          <button
+      {/* Next Button */}
+      {/* <button
             onClick={nextSlide}
             className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 focus:outline-none"
           >
             &#10095;
           </button>
         </div>
-      </div>
+      </div> */}
+
     </>
   )
 }
-
 export default Profile
