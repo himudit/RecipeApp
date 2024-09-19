@@ -8,6 +8,7 @@ import images from '../assets/img1.jpg';
 import { v4 as uuidv4 } from 'uuid';
 import { Query } from 'appwrite';
 
+// jnd
 function ParentComponent() {
   const [dish, setDish] = useState('');
   const [submittedDish, setSubmittedDish] = useState('');

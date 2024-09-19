@@ -44,6 +44,7 @@ function Profile() {
         const fileId = uuidv4();
         // Upload the file
         await storage.createFile(conf.appwriteBucketId, fileId, selectedFile);
+        
         const documentData = {
           user_id: String(userDetails.$id),
           image_id: String(fileId),
