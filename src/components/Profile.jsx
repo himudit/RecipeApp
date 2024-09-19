@@ -44,8 +44,8 @@ function Profile() {
       ]);
 
       if (response.total > 0) {
-        // const document = response.documents[0];
-        // const documentId = document.$id;
+        const document = response.documents[0];
+        const documentId = document.$id;
         const fileId = uuidv4();
         const oldImageId = response.documents[0].image_id;
         await storage.deleteFile(conf.appwriteBucketId, oldImageId);
