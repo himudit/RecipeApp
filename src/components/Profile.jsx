@@ -37,27 +37,52 @@ function Profile() {
     )
   }, [])
 
-
   const handleUpload = async () => {
     if (selectedFile) {
-      try {
+      const response = await databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteCollection3Id, [
+        Query.equal('user_id', userDetails.$id),
+      ]);
+
+      if (response.total > 0) {
+        // const document = response.documents[0];
+        // const documentId = document.$id;
         const fileId = uuidv4();
-        // Upload the file
+        const oldImageId = response.documents[0].image_id;
+        await storage.deleteFile(conf.appwriteBucketId, oldImageId);
+
         await storage.createFile(conf.appwriteBucketId, fileId, selectedFile);
-        
+
         const documentData = {
           user_id: String(userDetails.$id),
           image_id: String(fileId),
         };
-        const promise = databases.createDocument(conf.appwriteDatabaseId, conf.appwriteCollection3Id, uuidv4(), documentData);
+        const updatedDocument = await databases.updateDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteCollection3Id,
+          documentId,
+          { image_id: String(fileId), }
+        );
+        console.log('Document updated successfully:', updatedDocument);
+      } else {
+        try {
+          const fileId = uuidv4();
+          // Upload the file
+          await storage.createFile(conf.appwriteBucketId, fileId, selectedFile);
 
-        // Get the file URL
-        const fileUrl = `${conf.appwriteUrl}/storage/buckets/${conf.appwriteBucketId}/files/${fileId}/view?project=${conf.appwriteProjectId}&mode=admin`;
+          const documentData = {
+            user_id: String(userDetails.$id),
+            image_id: String(fileId),
+          };
+          const promise = databases.createDocument(conf.appwriteDatabaseId, conf.appwriteCollection3Id, uuidv4(), documentData);
 
-        console.log(fileUrl);
-        setProfilePictureUrl(fileUrl);
-      } catch (error) {
-        console.error('Error uploading file:', error);
+          // Get the file URL
+          const fileUrl = `${conf.appwriteUrl}/storage/buckets/${conf.appwriteBucketId}/files/${fileId}/view?project=${conf.appwriteProjectId}&mode=admin`;
+
+          console.log(fileUrl);
+          setProfilePictureUrl(fileUrl);
+        } catch (error) {
+          console.error('Error uploading file:', error);
+        }
       }
     }
   };
