@@ -12,6 +12,8 @@ import Profile from './components/Profile.jsx'
 import RecipeAi from './components/RecipeAi.jsx'
 import Home from './components/Home.jsx'
 import CookingAnimation from "./components/Preloader/Preloader.jsx"
+import ToggleContext from './context/ToggleContext.js'
+import ToggleContextProvider from './context/ToggleContextProvider.jsx'
 
 function App() {
   const router = createBrowserRouter(
@@ -30,7 +32,9 @@ function App() {
   );
   return (
     <>
-      <RouterProvider router={router} />
+      <ToggleContextProvider>
+        <RouterProvider router={router} />
+      </ToggleContextProvider>
     </>
   )
 }

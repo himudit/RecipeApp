@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import RecipeApp from './RecipeApp';
 import CookingAnimation from './Preloader/Preloader';
 import { useNavigate } from 'react-router-dom';
@@ -7,9 +7,12 @@ import conf from '../conf/conf';
 import images from '../assets/img1.jpg';
 import { v4 as uuidv4 } from 'uuid';
 import { Query } from 'appwrite';
+import ToggleContext from '../context/ToggleContext';
 
 // jnd
 function ParentComponent() {
+  const { toggle, setToggle } = useContext
+    (ToggleContext);
   const [dish, setDish] = useState('');
   const [submittedDish, setSubmittedDish] = useState('');
   const [loading, setLoading] = useState(false);
@@ -97,6 +100,18 @@ function ParentComponent() {
             onChange={handleInputChange}
           />
         </form>
+
+        {/* toggle button */}
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" value="" class="sr-only peer" onClick={() => {
+            setToggle(!toggle);
+            console.log("button: ", toggle);
+          }} />
+          <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white dark:peer-focus:ring-white rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-black after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-900 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-white"></div>
+          <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Toggle me</span>
+        </label>
+
+
         <div>
           {loading ? (
             <CookingAnimation />
